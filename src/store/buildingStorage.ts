@@ -1,6 +1,4 @@
 import { Building } from '../models/Building';
-import { Apartment } from '../models/Apartment';
-import { Room } from '../models/Room';
 import { CommonRoom } from '../models/CommonRoom';
 import type { RoomType } from '../models/CommonRoom';
 
@@ -70,11 +68,12 @@ export function deserialiseBuilding(data: SerialisedBuilding): Building {
     const apt = b.getApartment(aptData.apartmentId) as Apartment;
 
     for (const roomData of aptData.rooms) {
-      const room = new Room(aptData.apartmentId, aptData.nextRoomIndex, roomData.currTemp);
+      // addRoom() handles Map insertion; we then restore the stored ID and thermal state.
+      const room = apt.addRoom();
       room.setId(roomData.id);
+      room.setCurrTemp(roomData.currTemp);
       room.setCoolingStatus(roomData.coolingStatus);
       room.setHeatingStatus(roomData.heatingStatus);
-      apt.setRooms([...apt.rooms, room]);
     }
 
     // Restores the counter so future addRoom() calls continue from the right index.

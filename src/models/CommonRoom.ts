@@ -7,8 +7,8 @@ export class CommonRoom extends Room {
   private _roomType: RoomType;
 
   // Prefix "CR" in the ID distinguishes common rooms from apartment rooms.
-  constructor(index: number, type: RoomType) {
-    super('CR', index);
+  constructor(index: number, type: RoomType, initialTemp: number) {
+    super('CR', index, initialTemp);
     this._roomType = type;
   }
 

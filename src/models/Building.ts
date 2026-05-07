@@ -30,7 +30,7 @@ export class Building {
   // ── Common room CRUD ─────────────────────────────────────────────────────
 
   addCommonRoom(type: RoomType): CommonRoom {
-    const room = new CommonRoom(this._commonRooms.length + 1, type);
+    const room = new CommonRoom(this._commonRooms.length + 1, type, Math.random() * 30 + 10);
     this._commonRooms.push(room);
     return room;
   }
