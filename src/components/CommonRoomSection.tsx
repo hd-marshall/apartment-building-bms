@@ -45,7 +45,7 @@ export function CommonRoomSection({ commonRooms, buildingTemp }: Props) {
             ? { label: 'Heating', icon: <Flame className="w-3 h-3" />, cls: 'bg-orange-50 text-orange-600 border-orange-200', bar: 'bg-orange-400' }
             : room.coolingStatus
             ? { label: 'Cooling', icon: <Wind className="w-3 h-3" />, cls: 'bg-blue-50 text-ci-blue border-blue-200', bar: 'bg-ci-blue' }
-            : { label: 'Idle', icon: <Minus className="w-3 h-3" />, cls: 'bg-gray-50 text-gray-400 border-gray-200', bar: 'bg-gray-200' };
+            : { label: 'Idle', icon: <Minus className="w-3 h-3" />, cls: 'bg-green-50 text-ci-green border-green-200', bar: 'bg-ci-green' };
 
           return (
             <div
