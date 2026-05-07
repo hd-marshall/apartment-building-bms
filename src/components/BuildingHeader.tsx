@@ -11,6 +11,7 @@ interface Props {
 export function BuildingHeader({ onAddApartment }: Props) {
   const building = useBuildingStore(s => s.building);
   const setBuildingTemp = useBuildingStore(s => s.setBuildingTemp);
+  const lastUpdated = useBuildingStore(s => s.lastUpdated);
   const { weather, error: weatherError } = useWeather();
 
   const allRooms = building.apartments.flatMap(a => a.rooms);
@@ -71,6 +72,7 @@ export function BuildingHeader({ onAddApartment }: Props) {
             icon={<Thermometer className="w-4 h-4 text-ci-blue" />}
             label="Avg Room Temp"
             value={`${avgTemp}°C`}
+            subtitle={`Updated ${lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`}
           />
           <StatCard
             icon={<Wind className="w-4 h-4 text-orange-500" />}
@@ -120,18 +122,22 @@ export function BuildingHeader({ onAddApartment }: Props) {
   );
 }
 
-function StatCard({ icon, label, value, valueClass = 'text-ci-text' }: {
+function StatCard({ icon, label, value, valueClass = 'text-ci-text', subtitle }: {
   icon: React.ReactNode;
   label: string;
   value: string;
   valueClass?: string;
+  subtitle?: string;
 }) {
   return (
     <div className="bg-white border border-ci-border rounded-lg px-4 py-3 flex items-center gap-3 shadow-sm">
       {icon}
-      <div>
+      <div className="flex-1 min-w-0">
         <p className="text-xs text-gray-400 leading-none mb-1">{label}</p>
-        <p className={`text-sm font-semibold ${valueClass}`}>{value}</p>
+        <div className="flex items-baseline justify-between gap-2">
+          <p className={`text-sm font-semibold ${valueClass}`}>{value}</p>
+          {subtitle && <p className="text-xs text-gray-400 shrink-0">{subtitle}</p>}
+        </div>
       </div>
     </div>
   );

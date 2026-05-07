@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useBuildingStore } from './store/useBuildingStore';
 import { BuildingHeader } from './components/BuildingHeader';
 import { ApartmentSection } from './components/ApartmentSection';
@@ -7,12 +7,20 @@ import { RoomModal } from './components/modals/RoomModal';
 import { ApartmentModal } from './components/modals/ApartmentModal';
 import type { Apartment } from './models/Apartment';
 
+const TICK_INTERVAL_MS = 5_000;
+
 type AddRoomModal = { mode: 'add'; apartmentId: number };
 type EditRoomModal = { mode: 'edit'; apartmentId: number; roomId: string; currentTemp: number };
 type RoomModalState = AddRoomModal | EditRoomModal | null;
 
 export default function App() {
   const building = useBuildingStore(s => s.building);
+  const tick = useBuildingStore(s => s.tick);
+
+  useEffect(() => {
+    const id = setInterval(tick, TICK_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [tick]);
 
   const [addingApartment, setAddingApartment] = useState(false);
   const [editingApartment, setEditingApartment] = useState<Apartment | null>(null);

@@ -36,8 +36,8 @@ export function RoomCard({ room, buildingTemp, onEdit, onDelete }: Props) {
     : {
         label: 'Idle',
         icon: <Minus className="w-3 h-3" />,
-        badge: 'bg-gray-50 text-gray-400 border-gray-200',
-        bar: 'bg-gray-200',
+        badge: 'bg-green-50 text-ci-green border-green-200',
+        bar: 'bg-ci-green',
         border: 'border-l-ci-border',
         devClass: 'text-gray-300',
       };
