@@ -1,5 +1,6 @@
-import { Thermometer, Wind, Users } from 'lucide-react';
+import { Thermometer, Wind, Users, Cloud } from 'lucide-react';
 import { useBuildingStore } from '../store/useBuildingStore';
+import { useWeather } from '../hooks/useWeather';
 import logo from '../assets/ConserveIt-Logo.avif';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 export function BuildingHeader({ onAddApartment }: Props) {
   const building = useBuildingStore(s => s.building);
   const setBuildingTemp = useBuildingStore(s => s.setBuildingTemp);
+  const { weather, error: weatherError } = useWeather();
 
   const allRooms = building.apartments.flatMap(a => a.rooms);
   const allSpaces = [...allRooms, ...building.commonRooms];
@@ -35,13 +37,24 @@ export function BuildingHeader({ onAddApartment }: Props) {
             </div>
           </div>
 
-          <button
-            onClick={onAddApartment}
-            className="flex items-center gap-2 px-4 py-2 bg-ci-green hover:bg-ci-green-dark text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer shadow-sm"
-          >
-            <Users className="w-4 h-4" />
-            Add Apartment
-          </button>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Cloud className="w-4 h-4 text-ci-blue shrink-0" />
+              {!weather && !weatherError && <span className="text-gray-400">—</span>}
+              {weather && (
+                <span>{weather.temp}°C &middot; {weather.description}</span>
+              )}
+              {weatherError && <span className="text-gray-400">Unavailable</span>}
+            </div>
+
+            <button
+              onClick={onAddApartment}
+              className="flex items-center gap-2 px-4 py-2 bg-ci-green hover:bg-ci-green-dark text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer shadow-sm"
+            >
+              <Users className="w-4 h-4" />
+              Add Apartment
+            </button>
+          </div>
         </div>
         <div className="h-1 bg-ci-green" />
       </div>
