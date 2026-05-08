@@ -2,7 +2,7 @@ import { Building } from '../models/Building';
 import { CommonRoom } from '../models/CommonRoom';
 import type { RoomType } from '../models/CommonRoom';
 
-export const STORAGE_KEY = 'conserveit-building-v1';
+export const STORAGE_KEY = 'conserveit-building-v4';
 
 // ── Serialised shapes (plain objects safe for JSON.stringify) ─────────────────
 

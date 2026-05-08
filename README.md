@@ -1,6 +1,6 @@
 # Niagara Building Management System
 
-A building controls prototype built for the Niagara Apps UX Developer take-home task.
+A building controls prototype built for the Conserve It Grad Developer take-home task.
 
 ## Getting started
 

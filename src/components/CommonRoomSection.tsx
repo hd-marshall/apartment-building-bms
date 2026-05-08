@@ -4,6 +4,7 @@ import type { CommonRoom } from '../models/CommonRoom';
 interface Props {
   commonRooms: CommonRoom[];
   buildingTemp: number;
+  compact?: boolean;
 }
 
 const TYPE_CONFIG = {
@@ -28,7 +29,7 @@ const TYPE_CONFIG = {
 };
 
 /** Displays the building's common areas (Gym, Library, Laundry) in a row. */
-export function CommonRoomSection({ commonRooms, buildingTemp }: Props) {
+export function CommonRoomSection({ commonRooms, buildingTemp, compact = false }: Props) {
   if (!commonRooms.length) return null;
 
   return (
@@ -36,7 +37,7 @@ export function CommonRoomSection({ commonRooms, buildingTemp }: Props) {
       <h2 className="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-3">
         Common Areas
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className={`grid gap-4 ${compact ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-3'}`}>
         {commonRooms.map(room => {
           const typeConf = TYPE_CONFIG[room.roomType];
           const pct = Math.min(100, Math.max(0, ((room.currTemp - 10) / 30) * 100));

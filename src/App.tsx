@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useBuildingStore } from './store/useBuildingStore';
 import { BuildingHeader } from './components/BuildingHeader';
-import { ApartmentSection } from './components/ApartmentSection';
-import { CommonRoomSection } from './components/CommonRoomSection';
+import { LoadingScreen } from './components/LoadingScreen';
+import { BuildingView } from './views/BuildingView';
+import { ApartmentView } from './views/ApartmentView';
 import { RoomModal } from './components/modals/RoomModal';
 import { ApartmentModal } from './components/modals/ApartmentModal';
+import { fetchApartment } from './api/buildingApi';
 import type { Apartment } from './models/Apartment';
 
 const TICK_INTERVAL_MS = 5_000;
 
-type AddRoomModal = { mode: 'add'; apartmentId: number };
+type View =
+  | { name: 'building' }
+  | { name: 'loading' }
+  | { name: 'apartment'; id: number };
+
+type AddRoomModal  = { mode: 'add';  apartmentId: number };
 type EditRoomModal = { mode: 'edit'; apartmentId: number; roomId: string; currentTemp: number };
 type RoomModalState = AddRoomModal | EditRoomModal | null;
 
@@ -22,48 +29,44 @@ export default function App() {
     return () => clearInterval(id);
   }, [tick]);
 
+  const [view, setView] = useState<View>({ name: 'building' });
   const [addingApartment, setAddingApartment] = useState(false);
   const [editingApartment, setEditingApartment] = useState<Apartment | null>(null);
   const [roomModal, setRoomModal] = useState<RoomModalState>(null);
 
+  const handleFloorClick = async (apartmentId: number) => {
+    setView({ name: 'loading' });
+    const apt = await fetchApartment(apartmentId);
+    setView(apt ? { name: 'apartment', id: apartmentId } : { name: 'building' });
+  };
+
   return (
-    <div className="min-h-screen bg-ci-off-white">
+    <div className="h-screen flex flex-col overflow-hidden">
       <BuildingHeader onAddApartment={() => setAddingApartment(true)} />
 
-      <main className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-6">
-        <CommonRoomSection
-          commonRooms={building.commonRooms}
-          buildingTemp={building.buildingTemp}
-        />
+      {view.name === 'loading' && <LoadingScreen />}
 
-        <div className="flex flex-col gap-4">
-          {building.apartments.length === 0 ? (
-            <div className="text-center py-20 text-slate-600">
-              <p className="text-lg">No apartments yet.</p>
-              <button
-                onClick={() => setAddingApartment(true)}
-                className="mt-3 text-blue-500 hover:text-blue-400 text-sm cursor-pointer"
-              >
-                Add the first apartment
-              </button>
-            </div>
-          ) : (
-            building.apartments.map(apt => (
-              <ApartmentSection
-                key={apt.apartmentId}
-                apartment={apt}
-                buildingTemp={building.buildingTemp}
-                onAddRoom={id => setRoomModal({ mode: 'add', apartmentId: id })}
-                onEditRoom={(apartmentId, roomId) => {
-                  const room = building.getApartment(apartmentId)?.getRoom(roomId);
-                  if (room) setRoomModal({ mode: 'edit', apartmentId, roomId, currentTemp: room.currTemp });
-                }}
-                onEditOwner={apt => setEditingApartment(apt)}
-              />
-            ))
-          )}
+      {view.name === 'building' && (
+        <BuildingView
+          onFloorClick={handleFloorClick}
+          onAddApartment={() => setAddingApartment(true)}
+        />
+      )}
+
+      {view.name === 'apartment' && (
+        <div className="flex-1 overflow-y-auto bg-ci-off-white">
+          <ApartmentView
+            apartmentId={view.id}
+            onBack={() => setView({ name: 'building' })}
+            onAddRoom={id => setRoomModal({ mode: 'add', apartmentId: id })}
+            onEditRoom={(apartmentId, roomId) => {
+              const room = building.getApartment(apartmentId)?.getRoom(roomId);
+              if (room) setRoomModal({ mode: 'edit', apartmentId, roomId, currentTemp: room.currTemp });
+            }}
+            onEditOwner={apt => setEditingApartment(apt)}
+          />
         </div>
-      </main>
+      )}
 
       {addingApartment && (
         <ApartmentModal mode="add" onClose={() => setAddingApartment(false)} />

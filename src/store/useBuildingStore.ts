@@ -47,16 +47,36 @@ function getInitialBuilding(): Building {
   return createInitialBuilding();
 }
 
-/** Creates the default building as specified in the brief. */
+const TENANTS: [number, string, number][] = [
+  [1,  'Alex Johnson',    5],
+  [2,  'Sam Rivera',      5],
+  [3,  'Morgan Lee',      4],
+  [4,  'Jordan Kim',      3],
+  [5,  'Taylor Brooks',   4],
+  [6,  'Casey Chen',      3],
+  [7,  'Riley Park',      5],
+  [8,  'Avery Wong',      3],
+  [9,  'Quinn Davis',     4],
+  [10, 'Blake Martinez',  3],
+  [11, 'Drew Thompson',   4],
+  [12, 'Sage Wilson',     3],
+  [13, 'Hayden Moore',    5],
+  [14, 'Parker Garcia',   3],
+  [15, 'Reese Anderson',  4],
+  [16, 'Harper Lewis',    3],
+  [17, 'Cameron White',   4],
+  [18, 'Sydney Robinson', 5],
+  [19, 'Logan Clark',     3],
+  [20, 'Peyton Hill',     4],
+];
+
+/** Creates the default building with 20 occupied levels. */
 function createInitialBuilding(): Building {
   const b = new Building(25.0);
 
-  b.setApartment(101, 'Alex Johnson');
-  b.setApartment(102, 'Sam Rivera');
-
-  for (let i = 0; i < 5; i++) {
-    b.getApartment(101)!.addRoom();
-    b.getApartment(102)!.addRoom();
+  for (const [id, name, rooms] of TENANTS) {
+    b.setApartment(id, name);
+    for (let i = 0; i < rooms; i++) b.getApartment(id)!.addRoom();
   }
 
   b.addCommonRoom('Gym');
