@@ -40,7 +40,8 @@ export function ApartmentView({ onAddRoom, onEditRoom, onEditOwner }: Props) {
       <div className="flex items-start gap-4 flex-wrap">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 px-3 py-2 border border-ci-border rounded-lg text-sm text-gray-500 hover:text-ci-blue hover:border-ci-blue transition-colors cursor-pointer bg-white shadow-sm"
+          style={{ cursor: 'pointer' }}
+          className="flex items-center gap-2 px-3 py-2 border border-ci-border rounded-lg text-sm text-gray-500 hover:text-ci-blue hover:border-ci-blue transition-colors bg-white shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           Building
@@ -66,21 +67,24 @@ export function ApartmentView({ onAddRoom, onEditRoom, onEditOwner }: Props) {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => onAddRoom(apartmentId)}
-            className="flex items-center gap-2 px-4 py-2 bg-ci-blue hover:bg-ci-blue-dark text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer shadow-sm"
+            style={{ cursor: 'pointer' }}
+            className="flex items-center gap-2 px-4 py-2 bg-ci-blue hover:bg-ci-blue-dark text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
             Add Room
           </button>
           <button
             onClick={() => onEditOwner(apartment)}
-            className="flex items-center gap-2 px-3 py-2 border border-ci-border rounded-lg text-sm text-gray-500 hover:text-ci-blue hover:border-ci-blue transition-colors cursor-pointer bg-white"
+            style={{ cursor: 'pointer' }}
+            className="flex items-center gap-2 px-3 py-2 border border-ci-border rounded-lg text-sm text-gray-500 hover:text-ci-blue hover:border-ci-blue transition-colors bg-white"
           >
             <Pencil className="w-4 h-4" />
             Edit Tenant
           </button>
           <button
             onClick={() => { removeApartment(apartmentId); navigate('/'); }}
-            className="flex items-center gap-2 px-3 py-2 border border-red-200 rounded-lg text-sm text-red-400 hover:text-red-500 hover:border-red-400 transition-colors cursor-pointer bg-white"
+            style={{ cursor: 'pointer' }}
+            className="flex items-center gap-2 px-3 py-2 border border-red-200 rounded-lg text-sm text-red-400 hover:text-red-500 hover:border-red-400 transition-colors bg-white"
           >
             <Trash2 className="w-4 h-4" />
             Remove Suite
@@ -94,7 +98,8 @@ export function ApartmentView({ onAddRoom, onEditRoom, onEditOwner }: Props) {
           <p className="text-base">No rooms in this suite yet.</p>
           <button
             onClick={() => onAddRoom(apartmentId)}
-            className="mt-3 text-ci-blue hover:text-ci-blue-dark text-sm cursor-pointer transition-colors"
+            style={{ cursor: 'pointer' }}
+            className="mt-3 text-ci-blue hover:text-ci-blue-dark text-sm transition-colors"
           >
             Add the first room
           </button>

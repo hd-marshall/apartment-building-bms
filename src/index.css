@@ -26,6 +26,22 @@
 .bounce-dot-3 { animation: bounce-up-down 1.4s infinite ease-in-out; animation-delay: 0.4s; }
 
 @layer base {
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  input[type="range"] {
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    cursor: pointer;
+  }
+
   body {
     background-color: #FAFAFA;
     color: #1A1A1A;

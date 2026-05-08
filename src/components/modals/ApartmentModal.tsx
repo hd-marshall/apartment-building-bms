@@ -48,7 +48,7 @@ export function ApartmentModal(props: Props) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 cursor-pointer"
       onClick={e => e.target === e.currentTarget && props.onClose()}
     >
       <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden">
@@ -56,7 +56,7 @@ export function ApartmentModal(props: Props) {
           <h2 className="text-base font-bold text-white">
             {isEdit ? `Edit Apt ${(props as EditProps).apartment.apartmentId}` : 'Add Apartment'}
           </h2>
-          <button onClick={props.onClose} className="text-white/70 hover:text-white cursor-pointer">
+          <button onClick={props.onClose} style={{ cursor: 'pointer' }} className="text-white/70 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -98,13 +98,15 @@ export function ApartmentModal(props: Props) {
             <button
               type="button"
               onClick={props.onClose}
-              className="flex-1 px-4 py-2 text-sm text-gray-500 border border-ci-border hover:border-gray-400 rounded-lg transition-colors cursor-pointer font-medium"
+              style={{ cursor: 'pointer' }}
+              className="flex-1 px-4 py-2 text-sm text-gray-500 border border-ci-border hover:border-gray-400 rounded-lg transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 text-sm font-bold text-white bg-ci-blue hover:bg-ci-blue-dark rounded-lg transition-colors cursor-pointer"
+              style={{ cursor: 'pointer' }}
+              className="flex-1 px-4 py-2 text-sm font-bold text-white bg-ci-blue hover:bg-ci-blue-dark rounded-lg transition-colors"
             >
               {isEdit ? 'Save Changes' : 'Add Apartment'}
             </button>

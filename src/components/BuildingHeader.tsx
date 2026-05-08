@@ -33,7 +33,8 @@ export function BuildingHeader({ onAddApartment }: Props) {
 
             <button
               onClick={onAddApartment}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-ci-green hover:bg-ci-green-dark text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer shadow-sm"
+              style={{ cursor: 'pointer' }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-ci-green hover:bg-ci-green-dark text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               Add Suite

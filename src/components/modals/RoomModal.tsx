@@ -49,7 +49,7 @@ export function RoomModal(props: Props) {
           <h2 className="text-base font-bold text-white">
             {isEdit ? `Edit Room ${(props as EditProps).roomId}` : `Add Room — Apt ${props.apartmentId}`}
           </h2>
-          <button onClick={props.onClose} className="text-white/70 hover:text-white cursor-pointer">
+          <button onClick={props.onClose} style={{ cursor: 'pointer' }} className="text-white/70 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -82,13 +82,15 @@ export function RoomModal(props: Props) {
             <button
               type="button"
               onClick={props.onClose}
-              className="flex-1 px-4 py-2 text-sm text-gray-500 border border-ci-border hover:border-gray-400 rounded-lg transition-colors cursor-pointer font-medium"
+              style={{ cursor: 'pointer' }}
+              className="flex-1 px-4 py-2 text-sm text-gray-500 border border-ci-border hover:border-gray-400 rounded-lg transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 text-sm font-bold text-white bg-ci-blue hover:bg-ci-blue-dark rounded-lg transition-colors cursor-pointer"
+              style={{ cursor: 'pointer' }}
+              className="flex-1 px-4 py-2 text-sm font-bold text-white bg-ci-blue hover:bg-ci-blue-dark rounded-lg transition-colors"
             >
               {isEdit ? 'Save Changes' : 'Add Room'}
             </button>
@@ -102,7 +104,7 @@ export function RoomModal(props: Props) {
 function Backdrop({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   return (
     <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 cursor-pointer"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
       {children}

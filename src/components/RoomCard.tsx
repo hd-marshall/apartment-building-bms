@@ -82,13 +82,15 @@ export function RoomCard({ room, buildingTemp, onEdit, onDelete }: Props) {
       <div className="flex gap-2 pt-1 border-t border-ci-border">
         <button
           onClick={onEdit}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-ci-blue transition-colors cursor-pointer font-medium"
+          style={{ cursor: 'pointer' }}
+          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-ci-blue transition-colors font-medium"
         >
           <Pencil className="w-3 h-3" /> Edit
         </button>
         <button
           onClick={onDelete}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors ml-auto cursor-pointer font-medium"
+          style={{ cursor: 'pointer' }}
+          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors ml-auto font-medium"
         >
           <Trash2 className="w-3 h-3" /> Remove
         </button>

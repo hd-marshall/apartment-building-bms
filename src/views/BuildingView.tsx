@@ -4,6 +4,7 @@ import { useBuildingStore } from '../store/useBuildingStore';
 import { BuildingFacade } from '../components/BuildingFacade';
 import { CommonRoomSection } from '../components/CommonRoomSection';
 import { LoadingScreen } from '../components/LoadingScreen';
+import { EnergyChart } from '../components/EnergyChart';
 import { fetchApartment } from '../api/buildingApi';
 
 const MAX_LEVELS = 20;
@@ -38,28 +39,30 @@ export function BuildingView({ onAddApartment }: Props) {
       <div className="flex-1 flex overflow-hidden">
 
         {/* Left: level links column */}
-        <div className="w-20 shrink-0 flex flex-col overflow-y-auto border-r border-ci-border bg-white/90 backdrop-blur-sm z-10">
-          <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold px-3 pt-4 pb-2">
+        <div className="w-20 shrink-0 flex flex-col overflow-hidden border-r border-ci-border bg-white/90 backdrop-blur-sm z-10">
+          <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold px-3 pt-3 pb-1 shrink-0">
             Levels
           </p>
-          {Array.from({ length: MAX_LEVELS }, (_, i) => i + 1).map(level => {
-            const occupied = aptIds.has(level);
-            return (
-              <button
-                key={level}
-                onClick={occupied ? () => handleLevelClick(level) : undefined}
-                disabled={!occupied}
-                className={`mx-2 mb-1 px-2 py-2 text-xs font-semibold rounded-lg transition-colors text-center
-                  ${occupied
-                    ? 'bg-gray-50 border border-ci-border text-ci-text hover:bg-ci-blue hover:text-white hover:border-ci-blue cursor-pointer'
-                    : 'text-gray-300 cursor-default'
-                  }`}
-              >
-                L {level}
-              </button>
-            );
-          })}
-          <div className="h-4" />
+          <div className="flex-1 flex flex-col gap-0.5 px-2 pb-2">
+            {Array.from({ length: MAX_LEVELS }, (_, i) => i + 1).map(level => {
+              const occupied = aptIds.has(level);
+              return (
+                <button
+                  key={level}
+                  onClick={occupied ? () => handleLevelClick(level) : undefined}
+                  disabled={!occupied}
+                  style={{ cursor: occupied ? 'pointer' : 'default' }}
+                  className={`flex-1 text-xs font-semibold rounded-md transition-colors text-center
+                    ${occupied
+                      ? 'bg-gray-50 border border-ci-border text-ci-text hover:bg-ci-blue hover:text-white hover:border-ci-blue'
+                      : 'text-gray-200'
+                    }`}
+                >
+                  L {level}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Right: building backdrop + overlays */}
@@ -70,37 +73,47 @@ export function BuildingView({ onAddApartment }: Props) {
             <BuildingFacade apartments={building.apartments} />
           </div>
 
-          {/* Top centre: building temp card */}
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-72 bg-white/90 backdrop-blur-sm border border-ci-border rounded-xl shadow-md px-5 py-4">
-            <p className="text-xs text-gray-400 uppercase tracking-widest mb-2 font-medium">
-              Building Temperature
-            </p>
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-3xl font-bold text-ci-blue">{building.buildingTemp}</span>
-              <span className="text-xl text-gray-400 font-light">°C</span>
+          {/* Energy chart — left of centre. right edge sits 160px left of page centre (144px half-width of temp card + 16px gap) */}
+          <div className="absolute top-4 right-[calc(50%+160px)] z-10 w-80 h-44">
+            <EnergyChart />
+          </div>
+
+          {/* Building temp card — centred, same fixed height */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-72 h-44 bg-white/90 backdrop-blur-sm border border-ci-border rounded-xl shadow-md px-5 py-4 flex flex-col justify-between">
+            <div className="text-center">
+              <p className="text-xs text-gray-400 uppercase tracking-widest mb-2 font-medium">
+                Building Temperature
+              </p>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-3xl font-bold text-ci-blue">{building.buildingTemp}</span>
+                <span className="text-xl text-gray-400 font-light">°C</span>
+              </div>
             </div>
-            <input
-              type="range"
-              min={10}
-              max={40}
-              step={0.5}
-              value={building.buildingTemp}
-              onChange={e => setBuildingTemp(applyBounds(parseFloat(e.target.value)))}
-              className="w-full h-2 rounded-full appearance-none cursor-pointer
-                bg-linear-to-r from-blue-400 via-ci-green to-orange-400
-                [&::-webkit-slider-thumb]:appearance-none
-                [&::-webkit-slider-thumb]:w-4
-                [&::-webkit-slider-thumb]:h-4
-                [&::-webkit-slider-thumb]:rounded-full
-                [&::-webkit-slider-thumb]:bg-ci-blue
-                [&::-webkit-slider-thumb]:shadow-md
-                [&::-webkit-slider-thumb]:border-2
-                [&::-webkit-slider-thumb]:border-white
-                [&::-webkit-slider-thumb]:cursor-pointer"
-            />
-            <div className="flex justify-between text-xs text-gray-400 mt-1.5">
-              <span>10°C</span>
-              <span>40°C</span>
+            <div>
+              <input
+                type="range"
+                min={10}
+                max={40}
+                step={0.5}
+                value={building.buildingTemp}
+                onChange={e => setBuildingTemp(applyBounds(parseFloat(e.target.value)))}
+                style={{ cursor: 'pointer' }}
+                className="w-full h-2 rounded-full appearance-none
+                  bg-linear-to-r from-blue-400 via-ci-green to-orange-400
+                  [&::-webkit-slider-thumb]:appearance-none
+                  [&::-webkit-slider-thumb]:w-4
+                  [&::-webkit-slider-thumb]:h-4
+                  [&::-webkit-slider-thumb]:rounded-full
+                  [&::-webkit-slider-thumb]:bg-ci-blue
+                  [&::-webkit-slider-thumb]:shadow-md
+                  [&::-webkit-slider-thumb]:border-2
+                  [&::-webkit-slider-thumb]:border-white
+                  [&::-webkit-slider-thumb]:cursor-pointer"
+              />
+              <div className="flex justify-between text-xs text-gray-400 mt-1.5">
+                <span>10°C</span>
+                <span>40°C</span>
+              </div>
             </div>
           </div>
 
