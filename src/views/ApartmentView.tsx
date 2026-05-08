@@ -1,17 +1,20 @@
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useBuildingStore } from '../store/useBuildingStore';
 import { RoomCard } from '../components/RoomCard';
 import type { Apartment } from '../models/Apartment';
 
 interface Props {
-  apartmentId: number;
-  onBack: () => void;
   onAddRoom: (apartmentId: number) => void;
   onEditRoom: (apartmentId: number, roomId: string) => void;
   onEditOwner: (apt: Apartment) => void;
 }
 
-export function ApartmentView({ apartmentId, onBack, onAddRoom, onEditRoom, onEditOwner }: Props) {
+export function ApartmentView({ onAddRoom, onEditRoom, onEditOwner }: Props) {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const apartmentId = parseInt(id!, 10);
+
   const building = useBuildingStore(s => s.building);
   const removeApartment = useBuildingStore(s => s.removeApartment);
   const removeRoom = useBuildingStore(s => s.removeRoom);
@@ -19,7 +22,7 @@ export function ApartmentView({ apartmentId, onBack, onAddRoom, onEditRoom, onEd
   const apartment = building.getApartment(apartmentId);
 
   if (!apartment) {
-    onBack();
+    navigate('/');
     return null;
   }
 
@@ -36,7 +39,7 @@ export function ApartmentView({ apartmentId, onBack, onAddRoom, onEditRoom, onEd
       {/* Header */}
       <div className="flex items-start gap-4 flex-wrap">
         <button
-          onClick={onBack}
+          onClick={() => navigate('/')}
           className="flex items-center gap-2 px-3 py-2 border border-ci-border rounded-lg text-sm text-gray-500 hover:text-ci-blue hover:border-ci-blue transition-colors cursor-pointer bg-white shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -76,7 +79,7 @@ export function ApartmentView({ apartmentId, onBack, onAddRoom, onEditRoom, onEd
             Edit Tenant
           </button>
           <button
-            onClick={() => { removeApartment(apartmentId); onBack(); }}
+            onClick={() => { removeApartment(apartmentId); navigate('/'); }}
             className="flex items-center gap-2 px-3 py-2 border border-red-200 rounded-lg text-sm text-red-400 hover:text-red-500 hover:border-red-400 transition-colors cursor-pointer bg-white"
           >
             <Trash2 className="w-4 h-4" />
