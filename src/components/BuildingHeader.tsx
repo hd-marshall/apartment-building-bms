@@ -1,12 +1,8 @@
-import { Cloud, Plus } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import { useWeather } from '../hooks/useWeather';
 import logo from '../assets/ConserveIt-Logo.avif';
 
-interface Props {
-  onAddApartment: () => void;
-}
-
-export function BuildingHeader({ onAddApartment }: Props) {
+export function BuildingHeader() {
   const { weather, error: weatherError } = useWeather();
 
   return (
@@ -22,23 +18,12 @@ export function BuildingHeader({ onAddApartment }: Props) {
             </div>
           </div>
 
-          {/* Right: weather + add */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-sm text-gray-500">
-              <Cloud className="w-4 h-4 text-ci-blue shrink-0" />
-              {!weather && !weatherError && <span className="text-gray-400">—</span>}
-              {weather && <span>{weather.temp}°C · {weather.description}</span>}
-              {weatherError && <span className="text-gray-400">Unavailable</span>}
-            </div>
-
-            <button
-              onClick={onAddApartment}
-              style={{ cursor: 'pointer' }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-ci-green hover:bg-ci-green-dark text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Add Suite
-            </button>
+          {/* Right: weather */}
+          <div className="flex items-center gap-1.5 text-sm text-gray-500">
+            <Cloud className="w-4 h-4 text-ci-blue shrink-0" />
+            {!weather && !weatherError && <span className="text-gray-400">—</span>}
+            {weather && <span>{weather.temp}°C · {weather.description}</span>}
+            {weatherError && <span className="text-gray-400">Unavailable</span>}
           </div>
 
         </div>

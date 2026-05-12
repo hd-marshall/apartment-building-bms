@@ -1,8 +1,9 @@
 import { Building } from '../models/Building';
+import { Apartment } from '../models/Apartment';
 import { CommonRoom } from '../models/CommonRoom';
 import type { RoomType } from '../models/CommonRoom';
 
-export const STORAGE_KEY = 'conserveit-building-v4';
+export const STORAGE_KEY = 'conserveit-building-v5';
 
 // ── Serialised shapes (plain objects safe for JSON.stringify) ─────────────────
 
@@ -68,7 +69,6 @@ export function deserialiseBuilding(data: SerialisedBuilding): Building {
     const apt = b.getApartment(aptData.apartmentId) as Apartment;
 
     for (const roomData of aptData.rooms) {
-      // addRoom() handles Map insertion; we then restore the stored ID and thermal state.
       const room = apt.addRoom();
       room.setId(roomData.id);
       room.setCurrTemp(roomData.currTemp);
@@ -88,5 +88,6 @@ export function deserialiseBuilding(data: SerialisedBuilding): Building {
     cr.setHeatingStatus(crData.heatingStatus);
   }
 
+  b.updateAll();
   return b;
 }

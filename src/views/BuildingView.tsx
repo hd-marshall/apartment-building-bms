@@ -1,25 +1,25 @@
 import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useBuildingStore } from '../store/useBuildingStore';
 import { BuildingFacade } from '../components/BuildingFacade';
 import { CommonRoomSection } from '../components/CommonRoomSection';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { EnergyChart } from '../components/EnergyChart';
+import { TempChart } from '../components/TempChart';
+import { ApartmentModal } from '../components/modals/ApartmentModal';
 import { fetchApartment } from '../api/buildingApi';
 
 const MAX_LEVELS = 20;
-
-interface Props {
-  onAddApartment: () => void;
-}
 
 function applyBounds(val: number) {
   return Math.min(40, Math.max(10, val));
 }
 
-export function BuildingView({ onAddApartment }: Props) {
+export function BuildingView() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [addingApartment, setAddingApartment] = useState(false);
 
   const building = useBuildingStore(s => s.building);
   const setBuildingTemp = useBuildingStore(s => s.setBuildingTemp);
@@ -43,6 +43,16 @@ export function BuildingView({ onAddApartment }: Props) {
           <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold px-3 pt-3 pb-1 shrink-0">
             Levels
           </p>
+          <div className="px-2 pb-1 shrink-0">
+            <button
+              onClick={() => setAddingApartment(true)}
+              style={{ cursor: 'pointer' }}
+              className="w-full flex items-center justify-center gap-1 py-1 bg-ci-green hover:bg-ci-green-dark text-white text-xs font-semibold rounded-md transition-colors"
+            >
+              <Plus className="w-3 h-3" />
+              Add
+            </button>
+          </div>
           <div className="flex-1 flex flex-col gap-0.5 px-2 pb-2">
             {Array.from({ length: MAX_LEVELS }, (_, i) => i + 1).map(level => {
               const occupied = aptIds.has(level);
@@ -73,9 +83,14 @@ export function BuildingView({ onAddApartment }: Props) {
             <BuildingFacade apartments={building.apartments} />
           </div>
 
-          {/* Energy chart — left of centre. right edge sits 160px left of page centre (144px half-width of temp card + 16px gap) */}
+          {/* Energy chart — left of centre */}
           <div className="absolute top-4 right-[calc(50%+160px)] z-10 w-80 h-44">
             <EnergyChart />
+          </div>
+
+          {/* Temp chart — right of centre, mirroring energy chart */}
+          <div className="absolute top-4 left-[calc(50%+160px)] z-10 w-80 h-44">
+            <TempChart />
           </div>
 
           {/* Building temp card — centred, same fixed height */}
@@ -133,7 +148,7 @@ export function BuildingView({ onAddApartment }: Props) {
             <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-white/85 backdrop-blur-sm border border-ci-border rounded-xl p-6 text-center shadow-sm">
               <p className="text-gray-500 text-sm">No business suites yet.</p>
               <button
-                onClick={onAddApartment}
+                onClick={() => setAddingApartment(true)}
                 className="mt-2 text-ci-blue hover:text-ci-blue-dark text-sm cursor-pointer transition-colors"
               >
                 Add the first suite
@@ -143,6 +158,10 @@ export function BuildingView({ onAddApartment }: Props) {
 
         </div>
       </div>
+
+      {addingApartment && (
+        <ApartmentModal mode="add" onClose={() => setAddingApartment(false)} />
+      )}
     </>
   );
 }
