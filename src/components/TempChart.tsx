@@ -49,11 +49,18 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
 export function TempChart() {
   const { history, delta } = useTempData();
 
-  const badge = delta === null ? null : Math.abs(delta) <= 1
-    ? { label: '✓ On target', cls: 'bg-green-50 text-ci-green border-green-200' }
-    : delta > 0
-      ? { label: `+${delta}°C above`, cls: 'bg-orange-50 text-orange-500 border-orange-200' }
-      : { label: `${delta}°C below`, cls: 'bg-blue-50 text-ci-blue border-blue-200' };
+  let badge: { label: string; cls: string } | null = null;
+  if (delta !== null) {
+    if (delta === 0) {
+      badge = { label: '✓ On target', cls: 'bg-green-50 text-ci-green border-green-200' };
+    } else if (Math.abs(delta) <= 1) {
+      badge = { label: delta > 0 ? `+${delta}°C off` : `${delta}°C off`, cls: 'bg-green-50 text-ci-green border-green-200' };
+    } else if (delta > 0) {
+      badge = { label: `+${delta}°C above`, cls: 'bg-orange-50 text-orange-500 border-orange-200' };
+    } else {
+      badge = { label: `${delta}°C below`, cls: 'bg-blue-50 text-ci-blue border-blue-200' };
+    }
+  }
 
   return (
     <div className="h-full bg-white/90 backdrop-blur-sm border border-ci-border rounded-xl shadow-md px-5 py-4 flex flex-col justify-between">
