@@ -49,7 +49,7 @@ function getInitialBuilding(): Building {
 
 /** Creates the default building as specified in the brief. */
 function createInitialBuilding(): Building {
-  const b = new Building(25.0);
+  const b = new Building(20.0);
 
   b.setApartment(101, 'Alex Johnson');
   b.setApartment(102, 'Sam Rivera');
