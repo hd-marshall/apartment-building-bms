@@ -38,8 +38,6 @@ export abstract class ThermalUnit {
       change = 0.1;
     } else if (this._coolingStatus) {
       change = -0.1;
-    } else {
-      change = (Math.random() - 0.5) * 0.04;
     }
 
     this.setCurrTemp(this._currTemp + change);
